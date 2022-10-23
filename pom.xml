@@ -6,15 +6,17 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.project-athena</groupId>
 	<artifactId>moves-microservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>moves-microservice</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Microservice for Moves in City of Mist</description>
 	<properties>
 		<java.version>17</java.version>
+		<spring.boot.maven.plugin.version>2.7.5</spring.boot.maven.plugin.version>
+		<spring.boot.dependencies.version>2.7.5</spring.boot.dependencies.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,6 +40,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.vavr</groupId>
+			<artifactId>vavr</artifactId>
+			<version>0.10.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -45,14 +52,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
+				<version>${spring.boot.maven.plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.8</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-code-coverage-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

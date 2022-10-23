@@ -1,4 +1,4 @@
-package com.projectathena.movesmicroservice;
+package com.projectathena.movesMicroservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

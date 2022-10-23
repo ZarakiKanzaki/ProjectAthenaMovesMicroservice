@@ -12,3 +12,4 @@ This microservice will be used by the main api gateway in order to *display* all
 - A user can send a command to initiate a *Core Move*.
 - A user can send a command to initiate a *Cinematic Move*.
 - A user can send a command to receive the list of all *Core/Cinematic Moves* (the command will be splitted).
+- A user as **admin** role can create a *Custom Move*.

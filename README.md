@@ -5,7 +5,7 @@
 
 ## Introduction
 
-This microservice will be used by the main api gateway in order to *display* all the Cinematic and Basic Moves. For any reference, take a look at the *City of Mist Manual.*
+This microservice will be used by the main api gateway in order to *display* all the Cinematic and Basic Moves. For any reference, take a look at the ***City of Mist Manual.***
 
 ### Use Cases
 

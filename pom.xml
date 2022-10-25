@@ -13,11 +13,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>moves-microservice</name>
 	<description>Microservice for Moves in City of Mist</description>
-	<properties>
-		<java.version>17</java.version>
-		<spring.boot.maven.plugin.version>2.7.5</spring.boot.maven.plugin.version>
-		<spring.boot.dependencies.version>2.7.5</spring.boot.dependencies.version>
-	</properties>
+    <properties>
+        <java.version>17</java.version>
+        <spring.boot.maven.plugin.version>2.7.5</spring.boot.maven.plugin.version>
+        <spring.boot.dependencies.version>2.7.5</spring.boot.dependencies.version>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

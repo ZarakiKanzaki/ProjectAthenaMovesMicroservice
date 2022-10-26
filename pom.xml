@@ -19,6 +19,7 @@
         <spring.boot.dependencies.version>2.7.5</spring.boot.dependencies.version>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
+		<grpc.package.version>1.50.2</grpc.package.version>
     </properties>
 	<dependencies>
 		<dependency>
@@ -47,6 +48,22 @@
 			<artifactId>vavr</artifactId>
 			<version>0.10.4</version>
 		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-netty</artifactId>
+			<version>${grpc.package.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-protobuf</artifactId>
+			<version>${grpc.package.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-stub</artifactId>
+			<version>${grpc.package.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

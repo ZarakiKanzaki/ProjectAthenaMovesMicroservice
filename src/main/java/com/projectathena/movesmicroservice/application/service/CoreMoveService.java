@@ -10,7 +10,6 @@ import common.UseCase;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@UseCase
 public class CoreMoveService implements UseCoreMoveUseCase {
     private final CoreMovePort coreMovePort;
     private final DiceRollCommand diceRollCommand;

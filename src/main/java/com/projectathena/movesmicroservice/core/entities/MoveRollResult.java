@@ -1,16 +1,12 @@
 package com.projectathena.movesmicroservice.core.entities;
 
 import com.projectathena.movesmicroservice.core.enums.Condition;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class MoveRollResult {
     private Condition rollResult;

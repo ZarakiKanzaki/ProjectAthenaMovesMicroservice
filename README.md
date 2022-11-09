@@ -1,6 +1,6 @@
 # CoM Moves Microservice
 
-[![codecov](https://codecov.io/gh/ZarakiKanzaki/ProjectAthenaMovesMicroservice/branch/main/graph/badge.svg?token=X0BGHSLS4G)](https://codecov.io/gh/ZarakiKanzaki/ProjectAthenaMovesMicroservice) [![ZarakiKanzaki](https://circleci.com/gh/ZarakiKanzaki/ProjectAthenaMovesMicroservice.svg?style=svg)](https://app.circleci.com/pipelines/github/ZarakiKanzaki/ProjectAthenaMovesMicroservice)
+[![codecov](https://codecov.io/gh/ZarakiKanzaki/ProjectAthenaMovesMicroservice/branch/main/graph/badge.svg?token=X0BGHSLS4G)](https://codecov.io/gh/ZarakiKanzaki/ProjectAthenaMovesMicroservice) [![ZarakiKanzaki](https://circleci.com/gh/ZarakiKanzaki/ProjectAthenaMovesMicroservice.svg?style=svg)](https://app.circleci.com/pipelines/github/ZarakiKanzaki/ProjectAthenaMovesMicroservice) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ZarakiKanzaki_ProjectAthenaMovesMicroservice&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ZarakiKanzaki_ProjectAthenaMovesMicroservice)
 
 
 ## Introduction

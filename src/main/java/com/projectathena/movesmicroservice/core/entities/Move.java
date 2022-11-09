@@ -1,15 +1,12 @@
 package com.projectathena.movesmicroservice.core.entities;
 
 import com.projectathena.movesmicroservice.core.enums.MoveType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 @Builder
 public class Move {
@@ -17,6 +14,6 @@ public class Move {
     private String name;
     private MoveType type;
     private String description;
-    private List<String> exampleOfApplication;
-    private List<Outcome> outcomes;
+    private List<String> exampleOfApplication = new ArrayList<>();
+    private List<Outcome> outcomes = new ArrayList<>();
 }

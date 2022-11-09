@@ -1,13 +1,9 @@
 package com.projectathena.movesmicroservice.core.entities;
 
 import com.projectathena.movesmicroservice.core.enums.TagType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 @Builder
 public class Tag {

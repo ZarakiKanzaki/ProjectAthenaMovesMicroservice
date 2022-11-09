@@ -25,6 +25,10 @@ jobs:
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
+      # Code Analysis
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar -Dsonar.projectKey=ZarakiKanzaki_ProjectAthenaMovesMicroservice
       # Then run your tests!
       - run:
           name: Test
@@ -37,4 +41,5 @@ workflows:
   Build and Upload: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - build-and-test
+      - build-and-test:
+          context: SonarCloud

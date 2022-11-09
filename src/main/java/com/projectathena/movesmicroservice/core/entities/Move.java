@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Move {
-    private long Id;
+    private long id;
     private String name;
     private MoveType type;
     private String description;

@@ -18,7 +18,6 @@ class CharacterStatusTests {
 
 	@BeforeEach
 	void initializeComponents(){
-
 		characterStatusForTesting = buildStatusForTest();
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -39,12 +40,31 @@ class CharacterPowerBeforeRollTests {
         assertThat(characterPowerForTest.getNumberOfMythosThemeBooks()).isGreaterThanOrEqualTo((short) 0);
 
         assertThat(getSumOfAllThemeBooks()).isEqualTo(4);
+    }
 
-
+    @Test
+    void builder_completeCharacterBeforeRollWithBurnedTag_shouldNotContainOnePowerTag(){
+        characterPowerForTest = buildCharacterBeforeRollWithBurnedTag();
+        assertThat(characterPowerForTest.isBurnedTheTag()).isTrue();
+        assertThat(characterPowerForTest.getPowerTags().size()).isEqualTo(1);
     }
 
     private int getSumOfAllThemeBooks() {
         return characterPowerForTest.getNumberOfMythosThemeBooks() + characterPowerForTest.getNumberOfLogosThemeBooks();
+    }
+
+    private static CharacterPowerBeforeRoll buildCharacterBeforeRollWithBurnedTag() {
+        return CharacterPowerBeforeRoll.builder()
+                .moveId(SNOWFLAKE_ID)
+                .burnedTheTag(true)
+                .dynamiteUnlocked(false)
+                .highestPowerCharacterStatus(buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
+                .numberOfMythosThemeBooks((short) 1)
+                .numberOfLogosThemeBooks((short) 3)
+                .powerTags(Collections.singletonList(buildBurnedPowerTag()))
+                .weaknessTags(List.of())
+                .build();
     }
 
     private static CharacterPowerBeforeRoll buildCharacterBeforeRoll() {
@@ -59,6 +79,10 @@ class CharacterPowerBeforeRollTests {
                 .powerTags(Arrays.asList(buildGenericPowerTag(), buildGenericPowerTag()))
                 .weaknessTags(List.of())
                 .build();
+    }
+
+    private static Tag buildBurnedPowerTag() {
+        return Tag.builder().type(TagType.POWER).value((short) 3).name("Generic Power Tag").build();
     }
 
     private static Tag buildGenericPowerTag() {

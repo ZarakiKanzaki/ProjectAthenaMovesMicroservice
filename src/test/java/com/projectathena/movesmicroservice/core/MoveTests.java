@@ -27,7 +27,7 @@ class MoveTests {
 
 	@Test
 	void builder_completeCoreMove_shouldBeComplete() {
-		assertThat(moveForTesting.getId()).isGreaterThan(0);
+		assertThat(moveForTesting.getId()).isPositive();
 		assertThat(moveForTesting.getName()).isNotEmpty();
 		assertThat(moveForTesting.getDescription()).isNotEmpty();
 		assertThat(moveForTesting.getExampleOfApplication()).isNotEmpty();

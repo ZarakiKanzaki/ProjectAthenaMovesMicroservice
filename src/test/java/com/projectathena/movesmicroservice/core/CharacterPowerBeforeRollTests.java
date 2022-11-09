@@ -30,16 +30,13 @@ class CharacterPowerBeforeRollTests {
 
     @Test
     void builder_completeCharacterBeforeRoll_shouldBeCompleted() {
-        assertThat(characterPowerForTest.getMoveId()).isNotNull();
-        assertThat(characterPowerForTest.getMoveId()).isGreaterThan(0);
-        assertThat(characterPowerForTest.isBurnedTheTag()).isNotNull();
-        assertThat(characterPowerForTest.isDynamiteUnlocked()).isNotNull();
+        assertThat(characterPowerForTest.getMoveId()).isPositive();
         assertThat(characterPowerForTest.getPowerTags()).isNotNull();
         assertThat(characterPowerForTest.getWeaknessTags()).isNotNull();
         assertThat(characterPowerForTest.getHighestPowerCharacterStatus()).isNotNull();
         assertThat(characterPowerForTest.getHighestWeaknessCharacterStatus()).isNotNull();
-        assertThat(characterPowerForTest.getNumberOfLogosThemeBooks()).isNotNull();
-        assertThat(characterPowerForTest.getNumberOfMythosThemeBooks()).isNotNull();
+        assertThat(characterPowerForTest.getNumberOfLogosThemeBooks()).isGreaterThanOrEqualTo((short) 0);
+        assertThat(characterPowerForTest.getNumberOfMythosThemeBooks()).isGreaterThanOrEqualTo((short) 0);
 
         assertThat(getSumOfAllThemeBooks()).isEqualTo(4);
 

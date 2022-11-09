@@ -25,8 +25,7 @@ class CharacterStatusTests {
 	@Test
 	void builder_completeCharacterStatus_shouldBeComplete() {
 		assertThat(characterStatusForTesting.getName()).isNotNull();
-		assertThat(characterStatusForTesting.getValue()).isNotNull();
-		assertThat(characterStatusForTesting.getValue()).isGreaterThan( (short) 0);
+		assertThat(characterStatusForTesting.getValue()).isPositive();
 	}
 
 	private static CharacterStatus buildStatusForTest() {

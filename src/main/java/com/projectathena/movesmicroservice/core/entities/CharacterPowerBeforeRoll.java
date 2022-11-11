@@ -17,4 +17,8 @@ public class CharacterPowerBeforeRoll {
     private CharacterStatus highestWeaknessCharacterStatus;
     private short numberOfMythosThemeBooks;
     private short numberOfLogosThemeBooks;
+
+    public int getSumOfAllThemeBooks() {
+        return numberOfMythosThemeBooks + numberOfLogosThemeBooks;
+    }
 }

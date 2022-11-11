@@ -13,15 +13,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
+import static com.projectathena.movesmicroservice.core.CharacterPowerBeforeRollConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class CharacterPowerBeforeRollTests {
-    private static final String CHANGE_THE_GAME = "CHANGE THE GAME";
-    private static final String HIGHEST_WEAKNESS_STATUS = "Highest Weakness Status";
-    private static final String HIGHEST_POWER_STATUS = "Highest Power Status";
-    private static final long SNOWFLAKE_ID = 1427933380;
+
     private CharacterPowerBeforeRoll characterPowerForTest;
 
     @BeforeEach
@@ -39,18 +36,15 @@ class CharacterPowerBeforeRollTests {
         assertThat(characterPowerForTest.getNumberOfLogosThemeBooks()).isGreaterThanOrEqualTo((short) 0);
         assertThat(characterPowerForTest.getNumberOfMythosThemeBooks()).isGreaterThanOrEqualTo((short) 0);
 
-        assertThat(getSumOfAllThemeBooks()).isEqualTo(4);
+        assertThat(characterPowerForTest.getSumOfAllThemeBooks()).isEqualTo(4);
     }
 
     @Test
-    void builder_completeCharacterBeforeRollWithBurnedTag_shouldNotContainOnePowerTag(){
+    void builder_withBurnedTag_shouldContainOnePowerTagWith3Power(){
         characterPowerForTest = buildCharacterBeforeRollWithBurnedTag();
         assertThat(characterPowerForTest.isBurnedTheTag()).isTrue();
-        assertThat(characterPowerForTest.getPowerTags().size()).isEqualTo(1);
-    }
-
-    private int getSumOfAllThemeBooks() {
-        return characterPowerForTest.getNumberOfMythosThemeBooks() + characterPowerForTest.getNumberOfLogosThemeBooks();
+        assertThat(characterPowerForTest.getPowerTags()).hasSize(1);
+        assertThat(characterPowerForTest.getPowerTags().stream().anyMatch(x -> x.getValue() == 3)).isTrue();
     }
 
     private static CharacterPowerBeforeRoll buildCharacterBeforeRollWithBurnedTag() {

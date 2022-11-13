@@ -1,4 +1,4 @@
-package com.projectathena.movesmicroservice.application.port.out;
+package com.projectathena.movesmicroservice.application.service;
 
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 

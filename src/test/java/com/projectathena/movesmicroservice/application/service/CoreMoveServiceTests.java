@@ -2,7 +2,6 @@ package com.projectathena.movesmicroservice.application.service;
 
 import com.projectathena.movesmicroservice.application.port.in.GetCoreMoveQuery;
 import com.projectathena.movesmicroservice.application.port.out.CoreMovePort;
-import com.projectathena.movesmicroservice.application.port.out.DiceRollCommand;
 import com.projectathena.movesmicroservice.core.entities.*;
 import com.projectathena.movesmicroservice.core.enums.Condition;
 import com.projectathena.movesmicroservice.core.enums.MoveType;
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class CoreMoveServiceTests {
+class CoreMoveServiceTests {
 
 
 

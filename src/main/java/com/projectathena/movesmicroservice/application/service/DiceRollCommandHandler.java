@@ -3,17 +3,17 @@ package com.projectathena.movesmicroservice.application.service;
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 import com.projectathena.movesmicroservice.core.entities.Tag;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class DiceRollCommandHandler implements DiceRollCommand {
     private static final short PARTIAL_SUCCESS_LOWER_BOUND = 7;
     private static final short BURNED_TAG_POWER = 3;
-    private Random firstDice;
-    private Random secondDice;
+    private SecureRandom firstDice;
+    private SecureRandom secondDice;
 
     public DiceRollCommandHandler() {
-        firstDice = new Random();
-        secondDice = new Random();
+        firstDice = new SecureRandom();
+        secondDice = new SecureRandom();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class DiceRollCommandHandler implements DiceRollCommand {
         return (short) characterPowerBeforeRoll.getPowerTags().stream().mapToInt(Tag::getValue).sum();
     }
 
-    private short rollD6(Random dice) {
+    private short rollD6(SecureRandom dice) {
         return (short) (dice.nextInt(6 - 1) + 1);
     }
 }

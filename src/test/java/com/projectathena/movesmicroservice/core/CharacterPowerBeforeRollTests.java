@@ -68,8 +68,8 @@ class CharacterPowerBeforeRollTests {
                 .dynamiteUnlocked(false)
                 .highestPowerCharacterStatus(buildHighestPowerStatus())
                 .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
-                .numberOfMythosThemeBooks((short) 1)
-                .numberOfLogosThemeBooks((short) 3)
+                .numberOfMythosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
+                .numberOfLogosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
                 .powerTags(Arrays.asList(buildGenericPowerTag(), buildGenericPowerTag()))
                 .weaknessTags(List.of())
                 .build();

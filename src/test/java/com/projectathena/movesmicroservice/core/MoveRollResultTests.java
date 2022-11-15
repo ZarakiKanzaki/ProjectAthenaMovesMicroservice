@@ -12,7 +12,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 class MoveRollResultTests {
     private static final String CHANGE_THE_GAME = "CHANGE THE GAME";
     private static final String HIGHEST_WEAKNESS_STATUS = "Highest Weakness Status";

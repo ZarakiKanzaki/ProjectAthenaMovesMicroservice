@@ -16,7 +16,6 @@ import java.util.List;
 import static com.projectathena.movesmicroservice.core.CharacterPowerBeforeRollConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 class CharacterPowerBeforeRollTests {
 
     private CharacterPowerBeforeRoll characterPowerForTest;

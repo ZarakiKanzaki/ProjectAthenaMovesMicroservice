@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
-public class Move {
+public class Move extends Entity{
     private long id;
     private String name;
     private MoveType type;

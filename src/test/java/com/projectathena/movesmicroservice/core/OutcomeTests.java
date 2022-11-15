@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 class OutcomeTests {
 
 	private Outcome outcomeForTesting;

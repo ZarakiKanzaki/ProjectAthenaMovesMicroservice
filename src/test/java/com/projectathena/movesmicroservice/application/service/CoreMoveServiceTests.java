@@ -1,5 +1,6 @@
 package com.projectathena.movesmicroservice.application.service;
 
+import com.projectathena.movesmicroservice.MovesMicroserviceApplication;
 import com.projectathena.movesmicroservice.application.port.in.GetCoreMoveQuery;
 import com.projectathena.movesmicroservice.application.port.out.CoreMovePort;
 import com.projectathena.movesmicroservice.core.entities.*;
@@ -15,14 +16,11 @@ import java.util.List;
 
 import static com.projectathena.movesmicroservice.core.CharacterPowerBeforeRollConstants.*;
 import static com.projectathena.movesmicroservice.core.MoveRollResultConstants.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 class CoreMoveServiceTests {
-
 
 
     private final CoreMovePort coreMovePort = mock(CoreMovePort.class);
@@ -52,7 +50,8 @@ class CoreMoveServiceTests {
     void service_withRollLowerThanSeven_ReturnFailingRollResult() {
         characterPowerBeforeRollRequest = buildCharacterBeforeRoll();
         when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(FAILED_ROLL);
-        when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove());
+        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove())).doesNotThrowAnyException();
+
         when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(buildMoveResultWithFailure());
 
         var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
@@ -66,8 +65,9 @@ class CoreMoveServiceTests {
     void service_withRollLowerThanTenButGreaterThanSeven_ReturnPartialSuccessRollResult() {
         characterPowerBeforeRollRequest = buildCharacterBeforeRoll();
         when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(PARTIAL_SUCCESS);
-        when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove());
+        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove())).doesNotThrowAnyException();
         when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(buildMoveResultWithPartialSuccess());
+
 
         var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
 
@@ -81,7 +81,7 @@ class CoreMoveServiceTests {
     void service_withRollGreaterThanTen_ReturnSuccessRollResult() {
         characterPowerBeforeRollRequest = buildCharacterBeforeRoll();
         when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(SUCCESS);
-        when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove());
+        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove())).doesNotThrowAnyException();
         when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(buildMoveResultWithSuccess());
 
         var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);

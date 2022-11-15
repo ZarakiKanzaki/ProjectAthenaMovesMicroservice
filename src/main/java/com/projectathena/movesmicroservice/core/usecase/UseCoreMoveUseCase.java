@@ -1,8 +1,10 @@
 package com.projectathena.movesmicroservice.core.usecase;
 
+import com.projectathena.movesmicroservice.core.exceptions.ApplicationException;
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 import com.projectathena.movesmicroservice.core.entities.MoveRollResult;
 
+
 public interface UseCoreMoveUseCase {
-    MoveRollResult userCoreMove(CharacterPowerBeforeRoll characterPowerBeforeRoll);
+    MoveRollResult userCoreMove(CharacterPowerBeforeRoll characterPowerBeforeRoll) throws ApplicationException;
 }

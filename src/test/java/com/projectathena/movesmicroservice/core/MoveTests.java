@@ -21,7 +21,7 @@ class MoveTests {
 
 	@BeforeEach
 	void initializeComponents(){
-		moveForTesting = buildCompletedCoreMove();
+		moveForTesting = MoveTests.buildCompletedCoreMove();
 	}
 
 	@Test
@@ -32,26 +32,26 @@ class MoveTests {
 		assertThat(moveForTesting.getExampleOfApplication()).isNotEmpty();
 		assertThat(moveForTesting.getType()).isNotNull();
 		assertThat(moveForTesting.getOutcomes()).isNotEmpty();
-		assertThat(moveForTesting.getOutcomes().stream().anyMatch(x -> x.getConditions().stream().anyMatch(y -> y == Condition.SUCCESS))).isTrue();
-		assertThat(moveForTesting.getOutcomes().stream().anyMatch(x -> x.getConditions().stream().anyMatch(y -> y == Condition.PARTIAL_SUCCESS))).isTrue();
+		assertThat(moveForTesting.getOutcomes().stream().anyMatch(x -> x.getConditions().stream().anyMatch(y -> Condition.SUCCESS == y))).isTrue();
+		assertThat(moveForTesting.getOutcomes().stream().anyMatch(x -> x.getConditions().stream().anyMatch(y -> Condition.PARTIAL_SUCCESS == y))).isTrue();
 	}
 
 	private static Move buildCompletedCoreMove() {
 		return Move.builder()
-				.id(SNOWFLAKE_ID)
+				.id(MoveTests.SNOWFLAKE_ID)
 				.type(MoveType.CORE)
-				.name(CHANGE_THE_GAME)
+				.name(MoveTests.CHANGE_THE_GAME)
 				.description("When you use your abilities to give yourself or" +
 						"your allies an advantage, roll+Power. On a hit," +
 						"you get Juice=Power. Spend your Juice to gain the" +
 						"following effects, one-to-one:")
 				.exampleOfApplication(Arrays.asList("Buff a player", "Create statuses"))
-				.outcomes(buildOutcomes())
+				.outcomes(MoveTests.buildOutcomes())
 				.build();
 	}
 
 	private static List<Outcome> buildOutcomes() {
-		return Arrays.asList(getPartialSuccessOutcome(), getSuccessOutcome());
+		return Arrays.asList(MoveTests.getPartialSuccessOutcome(), MoveTests.getSuccessOutcome());
 	}
 
 	private static Outcome getSuccessOutcome() {

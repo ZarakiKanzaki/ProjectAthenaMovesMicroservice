@@ -1,15 +1,14 @@
 package com.projectathena.movesmicroservice.application.service;
 
-import com.projectathena.movesmicroservice.MovesMicroserviceApplication;
 import com.projectathena.movesmicroservice.application.port.in.GetCoreMoveQuery;
 import com.projectathena.movesmicroservice.application.port.out.CoreMovePort;
 import com.projectathena.movesmicroservice.core.entities.*;
 import com.projectathena.movesmicroservice.core.enums.Condition;
 import com.projectathena.movesmicroservice.core.enums.MoveType;
 import com.projectathena.movesmicroservice.core.enums.TagType;
+import com.projectathena.movesmicroservice.core.exceptions.ApplicationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +20,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class CoreMoveServiceTests {
-
-
     private final CoreMovePort coreMovePort = mock(CoreMovePort.class);
     private final DiceRollCommand diceRollCommand = mock(DiceRollCommand.class);
     private final GetCoreMoveQuery getCoreMoveQuery = mock(GetCoreMoveQuery.class);
@@ -35,26 +32,28 @@ class CoreMoveServiceTests {
     }
 
     @Test
-    void service_withRequestWithoutMoveId_shouldThrowException() {
-        characterPowerBeforeRollRequest = getRollWithoutMoveId();
+    void service_WithRequestWithoutMoveId_shouldThrowException() {
+        characterPowerBeforeRollRequest = CoreMoveServiceTests.getRollWithoutMoveId();
+
         assertThatThrownBy(() -> coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void service_withRequestWithMoreThan4CharacterThemeBooks_ShouldThrowException() {
         characterPowerBeforeRollRequest = getPowerRollWithIllegalNumberOfThemeBooks();
+
         assertThatThrownBy(() -> coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void service_withRollLowerThanSeven_ReturnFailingRollResult() {
-        characterPowerBeforeRollRequest = buildCharacterBeforeRoll();
+    void service_WithRollLowerThanSeven_ReturnFailingRollResult() {
+        characterPowerBeforeRollRequest = CoreMoveServiceTests.buildCharacterBeforeRoll();
+
         when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(FAILED_ROLL);
-        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove())).doesNotThrowAnyException();
+        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(CoreMoveServiceTests.buildCoreMove())).doesNotThrowAnyException();
+        when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(CoreMoveServiceTests.buildMoveResultWithFailure());
 
-        when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(buildMoveResultWithFailure());
-
-        var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
+        final var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
 
         assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isLessThan(PARTIAL_SUCCESS_LOWER_BOUND);
         assertThat(rollResult.getRollResult()).isEqualTo(Condition.FAILURE);
@@ -62,14 +61,14 @@ class CoreMoveServiceTests {
     }
 
     @Test
-    void service_withRollLowerThanTenButGreaterThanSeven_ReturnPartialSuccessRollResult() {
-        characterPowerBeforeRollRequest = buildCharacterBeforeRoll();
+    void service_WithRollLowerThanTenButGreaterThanSeven_ReturnPartialSuccessRollResult() {
+        characterPowerBeforeRollRequest = CoreMoveServiceTests.buildCharacterBeforeRoll();
+
         when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(PARTIAL_SUCCESS);
-        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove())).doesNotThrowAnyException();
-        when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(buildMoveResultWithPartialSuccess());
+        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(CoreMoveServiceTests.buildCoreMove())).doesNotThrowAnyException();
+        when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(CoreMoveServiceTests.buildMoveResultWithPartialSuccess());
 
-
-        var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
+        final var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
 
         assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isLessThan(SUCCESS_LOWER_BOUND);
         assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isGreaterThanOrEqualTo(PARTIAL_SUCCESS_LOWER_BOUND);
@@ -78,26 +77,41 @@ class CoreMoveServiceTests {
     }
 
     @Test
-    void service_withRollGreaterThanTen_ReturnSuccessRollResult() {
-        characterPowerBeforeRollRequest = buildCharacterBeforeRoll();
-        when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(SUCCESS);
-        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(buildCoreMove())).doesNotThrowAnyException();
-        when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(buildMoveResultWithSuccess());
+    void service_WithRollGreaterThanTen_ReturnSuccessRollResult() {
+        characterPowerBeforeRollRequest = CoreMoveServiceTests.buildCharacterBeforeRoll();
 
-        var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
+        when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(SUCCESS);
+        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(CoreMoveServiceTests.buildCoreMove())).doesNotThrowAnyException();
+        when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(CoreMoveServiceTests.buildMoveResultWithSuccess());
+
+        final var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
 
         assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isGreaterThanOrEqualTo(SUCCESS_LOWER_BOUND);
         assertThat(rollResult.getRollResult()).isEqualTo(Condition.PARTIAL_SUCCESS);
         assertThat(rollResult.getRollOutcomes()).allMatch(x -> x.getConditions().contains(Condition.PARTIAL_SUCCESS));
     }
 
+
+
+    @Test
+    void service_WithCompliantRollButTimeoutRequest_ShouldThrowException() {
+        characterPowerBeforeRollRequest = CoreMoveServiceTests.buildCharacterBeforeRoll();
+
+        when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(SUCCESS);
+        try {
+            when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenThrow(new ApplicationException());
+        } catch (final ApplicationException e) {
+            assertThatThrownBy(() -> coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).isInstanceOf(RuntimeException.class);
+        }
+    }
+
     private static MoveRollResult buildMoveResultWithFailure() {
         return MoveRollResult.builder()
                 .moveName(TITLE)
                 .rollResult(Condition.FAILURE)
-                .rollOutcomes(getFailingOutcomes())
+                .rollOutcomes(CoreMoveServiceTests.getFailingOutcomes())
                 .moveDescription(DESCRIPTION)
-                .characterPowerBeforeRoll(buildCharacterBeforeRoll())
+                .characterPowerBeforeRoll(CoreMoveServiceTests.buildCharacterBeforeRoll())
                 .build();
     }
 
@@ -105,9 +119,9 @@ class CoreMoveServiceTests {
         return MoveRollResult.builder()
                 .moveName(TITLE)
                 .rollResult(Condition.PARTIAL_SUCCESS)
-                .rollOutcomes(buildSuccessOutcomes())
+                .rollOutcomes(CoreMoveServiceTests.buildSuccessOutcomes())
                 .moveDescription(DESCRIPTION)
-                .characterPowerBeforeRoll(buildCharacterBeforeRoll())
+                .characterPowerBeforeRoll(CoreMoveServiceTests.buildCharacterBeforeRoll())
                 .build();
     }
 
@@ -115,9 +129,9 @@ class CoreMoveServiceTests {
         return MoveRollResult.builder()
                 .moveName(TITLE)
                 .rollResult(Condition.PARTIAL_SUCCESS)
-                .rollOutcomes(buildPartialSuccessOutcomes())
+                .rollOutcomes(CoreMoveServiceTests.buildPartialSuccessOutcomes())
                 .moveDescription(DESCRIPTION)
-                .characterPowerBeforeRoll(buildCharacterBeforeRoll())
+                .characterPowerBeforeRoll(CoreMoveServiceTests.buildCharacterBeforeRoll())
                 .build();
     }
 
@@ -128,24 +142,24 @@ class CoreMoveServiceTests {
                 .name(TITLE)
                 .description(DESCRIPTION)
                 .exampleOfApplication(Arrays.asList("Buff a player", "Create statuses"))
-                .outcomes(buildOutcomes())
+                .outcomes(CoreMoveServiceTests.buildOutcomes())
                 .build();
     }
 
     private static List<Outcome> buildSuccessOutcomes() {
-        return buildOutcomes().stream().filter(x -> x.getConditions().stream().allMatch(y -> y.equals(Condition.SUCCESS))).toList();
+        return CoreMoveServiceTests.buildOutcomes().stream().filter(x -> x.getConditions().stream().allMatch(y -> y == Condition.SUCCESS)).toList();
     }
 
     private static List<Outcome> buildPartialSuccessOutcomes() {
-        return buildOutcomes().stream().filter(x -> x.getConditions().stream().allMatch(y -> y.equals(Condition.PARTIAL_SUCCESS))).toList();
+        return CoreMoveServiceTests.buildOutcomes().stream().filter(x -> x.getConditions().stream().allMatch(y -> y == Condition.PARTIAL_SUCCESS)).toList();
     }
 
     private static List<Outcome> getFailingOutcomes() {
-        return buildOutcomes().stream().filter(x -> x.getConditions().stream().allMatch(y -> y.equals(Condition.FAILURE))).toList();
+        return CoreMoveServiceTests.buildOutcomes().stream().filter(x -> x.getConditions().stream().allMatch(y -> y == Condition.FAILURE)).toList();
     }
 
     private static List<Outcome> buildOutcomes() {
-        return Arrays.asList(buildFailureOutcome(),buildPartialSuccessOutcome(), buildSuccessOutcome());
+        return Arrays.asList(CoreMoveServiceTests.buildFailureOutcome(), CoreMoveServiceTests.buildPartialSuccessOutcome(), CoreMoveServiceTests.buildSuccessOutcome());
     }
 
     private static Outcome buildFailureOutcome() {
@@ -170,11 +184,11 @@ class CoreMoveServiceTests {
                 .moveId(SNOWFLAKE_ID)
                 .burnedTheTag(false)
                 .dynamiteUnlocked(false)
-                .highestPowerCharacterStatus(buildHighestPowerStatus())
-                .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
+                .highestPowerCharacterStatus(CoreMoveServiceTests.buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(CoreMoveServiceTests.buildHighestWeaknessStatus())
                 .numberOfMythosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
                 .numberOfLogosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
-                .powerTags(Arrays.asList(buildGenericPowerTag(), buildGenericPowerTag()))
+                .powerTags(Arrays.asList(CoreMoveServiceTests.buildGenericPowerTag(), CoreMoveServiceTests.buildGenericPowerTag()))
                 .weaknessTags(List.of())
                 .build();
     }

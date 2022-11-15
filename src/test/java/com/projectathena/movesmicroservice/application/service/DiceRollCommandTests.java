@@ -21,14 +21,14 @@ public class DiceRollCommandTests {
 
     @Test
     void command_WithRollWithoutTagsAndStatuses_ShouldBeNaturalRollBetweenTwoAndTwelve() {
-        characterPowerBeforeRollRequest = buildCharacterBeforeRollWithoutTagsAndStatuses();
-        assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isGreaterThanOrEqualTo(LOWER_DICE_BOUND).isLessThanOrEqualTo(UPPER_DICE_BOUND);
+        characterPowerBeforeRollRequest = DiceRollCommandTests.buildCharacterBeforeRollWithoutTagsAndStatuses();
+        assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isGreaterThanOrEqualTo(DiceRollCommandTests.LOWER_DICE_BOUND).isLessThanOrEqualTo(DiceRollCommandTests.UPPER_DICE_BOUND);
     }
 
     @Test
     void command_WithRollWithBurnedTag_ShouldBeNaturalRollOfTen() {
-        characterPowerBeforeRollRequest = buildCharacterBeforeRollWithBurnedTag();
-        assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isEqualTo(SUCCESS_ROLL);
+        characterPowerBeforeRollRequest = DiceRollCommandTests.buildCharacterBeforeRollWithBurnedTag();
+        assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isEqualTo(DiceRollCommandTests.SUCCESS_ROLL);
     }
 
     private static CharacterPowerBeforeRoll buildCharacterBeforeRollWithBurnedTag() {
@@ -36,8 +36,8 @@ public class DiceRollCommandTests {
                 .moveId(SNOWFLAKE_ID)
                 .burnedTheTag(true)
                 .dynamiteUnlocked(false)
-                .highestPowerCharacterStatus(buildHighestPowerStatus())
-                .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
+                .highestPowerCharacterStatus(DiceRollCommandTests.buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(DiceRollCommandTests.buildHighestWeaknessStatus())
                 .numberOfMythosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
                 .numberOfLogosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
                 .powerTags(List.of())
@@ -50,8 +50,8 @@ public class DiceRollCommandTests {
                 .moveId(SNOWFLAKE_ID)
                 .burnedTheTag(false)
                 .dynamiteUnlocked(false)
-                .highestPowerCharacterStatus(buildHighestPowerStatus())
-                .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
+                .highestPowerCharacterStatus(DiceRollCommandTests.buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(DiceRollCommandTests.buildHighestWeaknessStatus())
                 .numberOfMythosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
                 .numberOfLogosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
                 .powerTags(List.of())

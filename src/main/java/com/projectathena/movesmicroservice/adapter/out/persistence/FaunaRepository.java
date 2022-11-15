@@ -16,16 +16,16 @@ public abstract class FaunaRepository<T extends Entity> {
     protected final Class<T> entityType;
     protected final String className;
 
-    public FaunaRepository(Class<T> entityType, String className) {
+    public FaunaRepository(final Class<T> entityType, final String className) {
         this.entityType = entityType;
         this.className = className;
     }
 
-    protected T toEntity(Value value) {
+    protected T toEntity(final Value value) {
         return value.to(entityType).get();
     }
 
-    protected List<T> toList(Value value) {
+    protected List<T> toList(final Value value) {
         return new ArrayList<>(value.asCollectionOf(entityType).get());
     }
 }

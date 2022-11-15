@@ -22,7 +22,7 @@ class CharacterPowerBeforeRollTests {
 
     @BeforeEach
     void initializeComponents() {
-        characterPowerForTest = buildCharacterBeforeRoll();
+        characterPowerForTest = CharacterPowerBeforeRollTests.buildCharacterBeforeRoll();
     }
 
     @Test
@@ -40,10 +40,10 @@ class CharacterPowerBeforeRollTests {
 
     @Test
     void builder_withBurnedTag_shouldContainOnePowerTagWith3Power(){
-        characterPowerForTest = buildCharacterBeforeRollWithBurnedTag();
+        characterPowerForTest = CharacterPowerBeforeRollTests.buildCharacterBeforeRollWithBurnedTag();
         assertThat(characterPowerForTest.isBurnedTheTag()).isTrue();
         assertThat(characterPowerForTest.getPowerTags()).hasSize(1);
-        assertThat(characterPowerForTest.getPowerTags().stream().anyMatch(x -> x.getValue() == 3)).isTrue();
+        assertThat(characterPowerForTest.getPowerTags().stream().anyMatch(x -> 3 == x.getValue())).isTrue();
     }
 
     private static CharacterPowerBeforeRoll buildCharacterBeforeRollWithBurnedTag() {
@@ -51,11 +51,11 @@ class CharacterPowerBeforeRollTests {
                 .moveId(SNOWFLAKE_ID)
                 .burnedTheTag(true)
                 .dynamiteUnlocked(false)
-                .highestPowerCharacterStatus(buildHighestPowerStatus())
-                .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
+                .highestPowerCharacterStatus(CharacterPowerBeforeRollTests.buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(CharacterPowerBeforeRollTests.buildHighestWeaknessStatus())
                 .numberOfMythosThemeBooks((short) 1)
                 .numberOfLogosThemeBooks((short) 3)
-                .powerTags(Collections.singletonList(buildBurnedPowerTag()))
+                .powerTags(Collections.singletonList(CharacterPowerBeforeRollTests.buildBurnedPowerTag()))
                 .weaknessTags(List.of())
                 .build();
     }
@@ -65,11 +65,11 @@ class CharacterPowerBeforeRollTests {
                 .moveId(SNOWFLAKE_ID)
                 .burnedTheTag(false)
                 .dynamiteUnlocked(false)
-                .highestPowerCharacterStatus(buildHighestPowerStatus())
-                .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
+                .highestPowerCharacterStatus(CharacterPowerBeforeRollTests.buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(CharacterPowerBeforeRollTests.buildHighestWeaknessStatus())
                 .numberOfMythosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
                 .numberOfLogosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
-                .powerTags(Arrays.asList(buildGenericPowerTag(), buildGenericPowerTag()))
+                .powerTags(Arrays.asList(CharacterPowerBeforeRollTests.buildGenericPowerTag(), CharacterPowerBeforeRollTests.buildGenericPowerTag()))
                 .weaknessTags(List.of())
                 .build();
     }

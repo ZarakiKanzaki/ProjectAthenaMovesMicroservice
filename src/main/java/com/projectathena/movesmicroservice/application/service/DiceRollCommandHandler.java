@@ -8,8 +8,8 @@ import java.security.SecureRandom;
 public class DiceRollCommandHandler implements DiceRollCommand {
     private static final short PARTIAL_SUCCESS_LOWER_BOUND = 7;
     private static final short BURNED_TAG_POWER = 3;
-    private SecureRandom firstDice;
-    private SecureRandom secondDice;
+    private final SecureRandom firstDice;
+    private final SecureRandom secondDice;
 
     public DiceRollCommandHandler() {
         firstDice = new SecureRandom();
@@ -17,45 +17,45 @@ public class DiceRollCommandHandler implements DiceRollCommand {
     }
 
     @Override
-    public short rollForMove(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    public short rollForMove(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         if (characterPowerBeforeRoll.isBurnedTheTag()) {
-            return (short) (PARTIAL_SUCCESS_LOWER_BOUND +
-                    BURNED_TAG_POWER +
-                    getPositiveStatus(characterPowerBeforeRoll) -
-                    getNegativeStatus(characterPowerBeforeRoll));
+            return (short) (DiceRollCommandHandler.PARTIAL_SUCCESS_LOWER_BOUND +
+                    DiceRollCommandHandler.BURNED_TAG_POWER +
+                    DiceRollCommandHandler.getPositiveStatus(characterPowerBeforeRoll) -
+                    DiceRollCommandHandler.getNegativeStatus(characterPowerBeforeRoll));
         }
 
         return (short) (rollD6(firstDice) +
                 rollD6(secondDice) +
-                getPositiveValuesFromCharacterRoll(characterPowerBeforeRoll) -
+                DiceRollCommandHandler.getPositiveValuesFromCharacterRoll(characterPowerBeforeRoll) -
                 getNegativeValuesFromCharacterRoll(characterPowerBeforeRoll));
     }
 
-    private short getNegativeValuesFromCharacterRoll(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
-        return (short) (getSumOfWeaknessTags(characterPowerBeforeRoll) + getSumOfWeaknessTags(characterPowerBeforeRoll));
+    private short getNegativeValuesFromCharacterRoll(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+        return (short) (DiceRollCommandHandler.getSumOfWeaknessTags(characterPowerBeforeRoll) + DiceRollCommandHandler.getSumOfWeaknessTags(characterPowerBeforeRoll));
     }
 
-    private static short getSumOfWeaknessTags(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getSumOfWeaknessTags(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return (short) characterPowerBeforeRoll.getWeaknessTags().stream().mapToInt(Tag::getValue).sum();
     }
 
-    private static short getPositiveValuesFromCharacterRoll(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
-        return (short) (getSumOfPowerTags(characterPowerBeforeRoll) + getPositiveStatus(characterPowerBeforeRoll));
+    private static short getPositiveValuesFromCharacterRoll(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+        return (short) (DiceRollCommandHandler.getSumOfPowerTags(characterPowerBeforeRoll) + DiceRollCommandHandler.getPositiveStatus(characterPowerBeforeRoll));
     }
 
-    private static short getNegativeStatus(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getNegativeStatus(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return characterPowerBeforeRoll.getHighestWeaknessCharacterStatus().getValue();
     }
 
-    private static short getPositiveStatus(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getPositiveStatus(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return characterPowerBeforeRoll.getHighestPowerCharacterStatus().getValue();
     }
 
-    private static short getSumOfPowerTags(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getSumOfPowerTags(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return (short) characterPowerBeforeRoll.getPowerTags().stream().mapToInt(Tag::getValue).sum();
     }
 
-    private short rollD6(SecureRandom dice) {
+    private short rollD6(final SecureRandom dice) {
         return (short) (dice.nextInt(6 - 1) + 1);
     }
 }

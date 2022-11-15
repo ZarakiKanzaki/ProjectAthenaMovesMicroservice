@@ -15,7 +15,7 @@ public class FaunaClientProperties {
         return endpoint;
     }
 
-    public void setEndpoint(String endpoint) {
+    public void setEndpoint(final String endpoint) {
         this.endpoint = endpoint;
     }
 
@@ -23,7 +23,7 @@ public class FaunaClientProperties {
         return secret;
     }
 
-    public void setSecret(String secret) {
+    public void setSecret(final String secret) {
         this.secret = secret;
     }
 }

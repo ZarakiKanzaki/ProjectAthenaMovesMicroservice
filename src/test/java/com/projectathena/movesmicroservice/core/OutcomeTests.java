@@ -19,7 +19,7 @@ class OutcomeTests {
 
 	@BeforeEach
 	void initializeComponents(){
-		outcomeForTesting = buildPartialSuccessOutcome();
+        outcomeForTesting = OutcomeTests.buildPartialSuccessOutcome();
 	}
 
 	@Test

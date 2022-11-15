@@ -18,7 +18,7 @@ class TagTests {
 
 	@BeforeEach
 	void initializeComponents(){
-		tagForTesting = buildTagForTest();
+		tagForTesting = TagTests.buildTagForTest();
 	}
 
 	@Test

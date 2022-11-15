@@ -29,13 +29,13 @@ public class CoreMoveService implements UseCoreMoveUseCase {
         }
     }
 
-    private void validateRoll(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private void validateRoll(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         if (characterPowerBeforeRoll.getMoveId() <= 0) {
             throw new IllegalArgumentException(String.format("Core move Id should contain a valid Id, current Id: %d", characterPowerBeforeRoll.getMoveId()));
         }
 
         if (characterPowerBeforeRoll.getSumOfAllThemeBooks() > 4) {
-            throw new IllegalArgumentException(String.format("Illegal number of theme books, maximum allowed is %d", MAXIMUM_ALLOWED_THEME_BOOKS));
+            throw new IllegalArgumentException(String.format("Illegal number of theme books, maximum allowed is %d", CoreMoveService.MAXIMUM_ALLOWED_THEME_BOOKS));
         }
     }
 }

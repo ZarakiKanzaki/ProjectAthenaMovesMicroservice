@@ -5,23 +5,21 @@ import com.projectathena.movesmicroservice.core.enums.Condition;
 import com.projectathena.movesmicroservice.core.enums.TagType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.projectathena.movesmicroservice.core.CharacterPowerBeforeRollConstants.*;
+import static com.projectathena.movesmicroservice.core.MoveRollResultConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MoveRollResultTests {
-    private static final String CHANGE_THE_GAME = "CHANGE THE GAME";
-    private static final String HIGHEST_WEAKNESS_STATUS = "Highest Weakness Status";
-    private static final String HIGHEST_POWER_STATUS = "Highest Power Status";
-    private static final long SNOWFLAKE_ID = 1427933380;
+
     private MoveRollResult rollResultForTest;
 
     @BeforeEach
     void initializeComponents() {
-        rollResultForTest = buildMoveResult();
+        rollResultForTest = MoveRollResultTests.buildMoveResult();
     }
 
 
@@ -38,19 +36,16 @@ class MoveRollResultTests {
 
     private static MoveRollResult buildMoveResult() {
         return MoveRollResult.builder()
-                .moveName(CHANGE_THE_GAME)
+                .moveName(TITLE)
                 .rollResult(Condition.PARTIAL_SUCCESS)
-                .rollOutcomes(buildOutcomes())
-                .moveDescription("When you use your abilities to give yourself or" +
-                        "your allies an advantage, roll+Power. On a hit," +
-                        "you get Juice=Power. Spend your Juice to gain the" +
-                        "following effects, one-to-one:")
-                .characterPowerBeforeRoll(buildCharacterBeforeRoll())
+                .rollOutcomes(MoveRollResultTests.buildOutcomes())
+                .moveDescription(DESCRIPTION)
+                .characterPowerBeforeRoll(MoveRollResultTests.buildCharacterBeforeRoll())
                 .build();
     }
 
     private static List<Outcome> buildOutcomes() {
-        return Arrays.asList(buildPartialSuccessOutcome(), buildSuccessOutcome());
+        return Arrays.asList(MoveRollResultTests.buildPartialSuccessOutcome(), MoveRollResultTests.buildSuccessOutcome());
     }
 
     private static Outcome buildSuccessOutcome() {
@@ -68,11 +63,11 @@ class MoveRollResultTests {
                 .moveId(SNOWFLAKE_ID)
                 .burnedTheTag(false)
                 .dynamiteUnlocked(false)
-                .highestPowerCharacterStatus(buildHighestPowerStatus())
-                .highestWeaknessCharacterStatus(buildHighestWeaknessStatus())
+                .highestPowerCharacterStatus(MoveRollResultTests.buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(MoveRollResultTests.buildHighestWeaknessStatus())
                 .numberOfMythosThemeBooks((short) 1)
                 .numberOfLogosThemeBooks((short) 3)
-                .powerTags(Arrays.asList(buildGenericPowerTag(), buildGenericPowerTag()))
+                .powerTags(Arrays.asList(MoveRollResultTests.buildGenericPowerTag(), MoveRollResultTests.buildGenericPowerTag()))
                 .weaknessTags(List.of())
                 .build();
     }

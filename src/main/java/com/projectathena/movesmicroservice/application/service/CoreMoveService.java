@@ -7,6 +7,7 @@ import com.projectathena.movesmicroservice.application.port.out.GetCoreMoveResul
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 import com.projectathena.movesmicroservice.core.entities.MoveRollResult;
 import com.projectathena.movesmicroservice.core.usecase.UseCoreMoveUseCase;
+import common.StringUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +24,16 @@ public class CoreMoveService implements UseCoreMoveUseCase {
         validateRoll(characterPowerBeforeRoll);
         try {
             return coreMovePort.getCoreMoveResult(diceRollCommand.rollForMove(characterPowerBeforeRoll),
-                    getCoreMoveQuery.getCoreMove(characterPowerBeforeRoll.getMoveId()),
+                    getCoreMoveQuery.getCoreMove(characterPowerBeforeRoll.getMoveName()),
                     characterPowerBeforeRoll);
         } catch (ApplicationException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void validateRoll(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
-        if (characterPowerBeforeRoll.getMoveId() <= 0) {
-            throw new IllegalArgumentException(String.format("Core move Id should contain a valid Id, current Id: %d", characterPowerBeforeRoll.getMoveId()));
+    private void validateRoll(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+        if (StringUtility.isNullOrWhitespace(characterPowerBeforeRoll.getMoveName())) {
+            throw new IllegalArgumentException(String.format("Core move Name should contain a valid Name, current name: %s", characterPowerBeforeRoll.getMoveName()));
         }
 
         if (characterPowerBeforeRoll.getSumOfAllThemeBooks() > 4) {

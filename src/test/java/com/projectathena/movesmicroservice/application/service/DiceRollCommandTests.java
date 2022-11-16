@@ -35,7 +35,7 @@ public class DiceRollCommandTests {
 
     private static CharacterPowerBeforeRoll buildCharacterBeforeRollWithBurnedTag() {
         return CharacterPowerBeforeRoll.builder()
-                .moveId(SNOWFLAKE_ID)
+                .moveName(TITLE)
                 .burnedTheTag(true)
                 .dynamiteUnlocked(false)
                 .highestPowerCharacterStatus(DiceRollCommandTests.buildHighestPowerStatus())
@@ -49,7 +49,7 @@ public class DiceRollCommandTests {
 
     private static CharacterPowerBeforeRoll buildCharacterBeforeRollWithoutTagsAndStatuses() {
         return CharacterPowerBeforeRoll.builder()
-                .moveId(SNOWFLAKE_ID)
+                .moveName(TITLE)
                 .burnedTheTag(false)
                 .dynamiteUnlocked(false)
                 .highestPowerCharacterStatus(DiceRollCommandTests.buildHighestPowerStatus())
@@ -73,8 +73,5 @@ public class DiceRollCommandTests {
         return CharacterStatus.builder().name(HIGHEST_POWER_STATUS).value((short) 0).build();
     }
 
-    private static CharacterPowerBeforeRoll getRollWithoutMoveId() {
-        return CharacterPowerBeforeRoll.builder().moveId(0).build();
-    }
 
 }

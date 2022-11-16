@@ -18,7 +18,7 @@ public class DiceRollCommandHandler implements DiceRollCommand {
     }
 
     @Override
-    public short rollForMove(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    public short rollForMove(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         if (characterPowerBeforeRoll.isBurnedTheTag()) {
             return (short) (DiceRollCommandHandler.PARTIAL_SUCCESS_LOWER_BOUND +
                     DiceRollCommandHandler.BURNED_TAG_POWER +
@@ -32,31 +32,31 @@ public class DiceRollCommandHandler implements DiceRollCommand {
                 getNegativeValuesFromCharacterRoll(characterPowerBeforeRoll));
     }
 
-    private short getNegativeValuesFromCharacterRoll(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private short getNegativeValuesFromCharacterRoll(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return (short) (DiceRollCommandHandler.getSumOfWeaknessTags(characterPowerBeforeRoll) + DiceRollCommandHandler.getSumOfWeaknessTags(characterPowerBeforeRoll));
     }
 
-    private static short getSumOfWeaknessTags(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getSumOfWeaknessTags(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return (short) characterPowerBeforeRoll.getWeaknessTags().stream().mapToInt(Tag::getValue).sum();
     }
 
-    private static short getPositiveValuesFromCharacterRoll(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getPositiveValuesFromCharacterRoll(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return (short) (DiceRollCommandHandler.getSumOfPowerTags(characterPowerBeforeRoll) + DiceRollCommandHandler.getPositiveStatus(characterPowerBeforeRoll));
     }
 
-    private static short getNegativeStatus(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getNegativeStatus(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return characterPowerBeforeRoll.getHighestWeaknessCharacterStatus().getValue();
     }
 
-    private static short getPositiveStatus(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getPositiveStatus(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return characterPowerBeforeRoll.getHighestPowerCharacterStatus().getValue();
     }
 
-    private static short getSumOfPowerTags(final CharacterPowerBeforeRoll characterPowerBeforeRoll) {
+    private static short getSumOfPowerTags(CharacterPowerBeforeRoll characterPowerBeforeRoll) {
         return (short) characterPowerBeforeRoll.getPowerTags().stream().mapToInt(Tag::getValue).sum();
     }
 
-    private short rollD6(final SecureRandom dice) {
+    private short rollD6(SecureRandom dice) {
         return (short) (dice.nextInt(6 - 1) + 1);
     }
 }

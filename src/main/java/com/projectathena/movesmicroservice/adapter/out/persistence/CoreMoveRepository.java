@@ -1,5 +1,6 @@
 package com.projectathena.movesmicroservice.adapter.out.persistence;
 
+import com.faunadb.client.types.Value;
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 import com.projectathena.movesmicroservice.core.entities.Outcome;
 import com.projectathena.movesmicroservice.core.enums.Condition;
@@ -8,48 +9,69 @@ import com.projectathena.movesmicroservice.application.port.out.GetCoreMoveQuery
 import com.projectathena.movesmicroservice.application.port.out.GetCoreMoveResultQuery;
 import com.projectathena.movesmicroservice.core.entities.Move;
 import com.projectathena.movesmicroservice.core.entities.MoveRollResult;
+import common.StringUtility;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
 
 import static com.faunadb.client.query.Language.*;
 
 @Repository
 public class CoreMoveRepository extends FaunaRepository<Move> implements GetCoreMoveResultQuery, GetCoreMoveQuery {
-
     private static final short SUCCESS_LOWER_BOUND = 10;
     private static final short SUCCESS_UPPER_BOUND = 12;
     private static final short PARTIAL_SUCCESS_LOWER_BOUND = 7;
-    private static final String MOVES = "moves";
+    private static final String MOVES_COLLECTION = "moves";
+    private static final String MOVES_DATABASE = "com-moves";
 
     public CoreMoveRepository() {
-        super(Move.class, CoreMoveRepository.MOVES);
+        super(Move.class, MOVES_COLLECTION);
     }
 
     @Override
-    public Move getCoreMove(final long moveId) throws ApplicationException {
-        try {
-            return client.query(
-                            Select(
-                                    Value("data"),
-                                    Get(Ref(Collection(className), Value(moveId)))
-                            )
-                    )
-                    .thenApply(this::toEntity)
-                    .get();
-        } catch (final InterruptedException | ExecutionException e) {
+    public Move getCoreMove(String moveName) throws ApplicationException {
+        if (StringUtility.isNullOrWhitespace(moveName)) {
             throw new ApplicationException();
         }
+
+        var result = getCoreMoveFromCloud(moveName);
+
+        if (isResultNullOrHadException(result)) {
+            throw new ApplicationException();
+        }
+
+        return getResultAsCoreMove(result);
     }
 
+
     @Override
-    public MoveRollResult getCoreMoveResult(short rollForMove, final Move coreMove, final CharacterPowerBeforeRoll rollPower) {
+    public MoveRollResult getCoreMoveResult(short rollForMove, Move coreMove, CharacterPowerBeforeRoll rollPower) throws ApplicationException {
+        if(coreMove == null || rollPower == null){
+            throw new ApplicationException();
+        }
+
         var rollResult = buildRollResult(coreMove, rollPower);
 
-        decideTheOutcomeOfTheRoll(rollForMove, coreMove, rollPower, rollResult);
+        decideOutcomeOfRoll(rollForMove, coreMove, rollPower, rollResult);
 
         return rollResult.build();
+    }
+
+    private Move getResultAsCoreMove(CompletableFuture<Value> result) {
+        return result.thenApply(this::toEntity).join();
+    }
+
+    private CompletableFuture<Value> getCoreMoveFromCloud(String moveName) {
+        return client.query(
+                Select(
+                        Value(MOVES_DATABASE),
+                        Get(Ref(Collection(className), Value(moveName)))
+                ));
+    }
+
+    private static boolean isResultNullOrHadException(CompletableFuture<Value> result) {
+        return result == null || result.isCancelled() || result.isCompletedExceptionally();
     }
 
     private static MoveRollResult.MoveRollResultBuilder buildRollResult(Move coreMove, CharacterPowerBeforeRoll rollPower) {
@@ -59,7 +81,7 @@ public class CoreMoveRepository extends FaunaRepository<Move> implements GetCore
                 .moveDescription(coreMove.getDescription());
     }
 
-    private static void decideTheOutcomeOfTheRoll(short rollForMove, Move coreMove, CharacterPowerBeforeRoll rollPower, MoveRollResult.MoveRollResultBuilder rollResult) {
+    private static void decideOutcomeOfRoll(short rollForMove, Move coreMove, CharacterPowerBeforeRoll rollPower, MoveRollResult.MoveRollResultBuilder rollResult) {
         if (isDynamiteSuccess(rollForMove, rollPower)) {
             setDynamiteSuccess(coreMove, rollResult);
         } else if (isSuccess(rollForMove)) {
@@ -104,7 +126,7 @@ public class CoreMoveRepository extends FaunaRepository<Move> implements GetCore
     }
 
     private static boolean isDynamiteSuccess(short rollForMove, CharacterPowerBeforeRoll rollPower) {
-        return rollForMove>= SUCCESS_UPPER_BOUND && rollPower.isDynamiteUnlocked();
+        return rollForMove >= SUCCESS_UPPER_BOUND && rollPower.isDynamiteUnlocked();
     }
 
     private static List<Outcome> getPartialSuccessOutcomes(Move coreMove) {

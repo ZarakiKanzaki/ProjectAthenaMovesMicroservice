@@ -19,7 +19,7 @@ class OutcomeTests {
 
 	@BeforeEach
 	void initializeComponents(){
-        outcomeForTesting = OutcomeTests.buildPartialSuccessOutcome();
+        outcomeForTesting = MoveTestBuilder.getPartialSuccessOutcome();
 	}
 
 	@Test
@@ -27,9 +27,4 @@ class OutcomeTests {
 		assertThat(outcomeForTesting.getDescription()).isNotEmpty();
 		assertThat(outcomeForTesting.getConditions()).isNotEmpty();
 	}
-
-	private static Outcome buildPartialSuccessOutcome() {
-		return Outcome.builder().description("Create a story tag").conditions(List.of(Condition.PARTIAL_SUCCESS)).build();
-	}
-
 }

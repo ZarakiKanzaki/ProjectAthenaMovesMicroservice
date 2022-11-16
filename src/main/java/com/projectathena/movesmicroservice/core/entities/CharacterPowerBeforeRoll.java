@@ -8,7 +8,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CharacterPowerBeforeRoll {
-    private long moveId;
+    private String moveName;
     private boolean burnedTheTag;
     private boolean dynamiteUnlocked;
     private List<Tag> powerTags;

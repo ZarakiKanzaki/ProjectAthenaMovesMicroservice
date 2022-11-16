@@ -9,23 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FaunaRepository<T extends Entity> {
-
     @Autowired
     protected FaunaClient client;
 
     protected final Class<T> entityType;
     protected final String className;
 
-    public FaunaRepository(final Class<T> entityType, final String className) {
+    protected FaunaRepository(Class<T> entityType, String className) {
         this.entityType = entityType;
         this.className = className;
     }
 
-    protected T toEntity(final Value value) {
+    protected T toEntity(Value value) {
         return value.to(entityType).get();
     }
 
-    protected List<T> toList(final Value value) {
+    protected List<T> toList(Value value) {
         return new ArrayList<>(value.asCollectionOf(entityType).get());
+    }
+
+    public void setFaunaClientForTest(FaunaClient newClient){
+        client = newClient;
     }
 }

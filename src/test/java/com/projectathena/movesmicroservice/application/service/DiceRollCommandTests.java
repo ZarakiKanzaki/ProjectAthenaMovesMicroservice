@@ -1,6 +1,6 @@
 package com.projectathena.movesmicroservice.application.service;
 
-import com.projectathena.movesmicroservice.adapter.out.persistence.DiceRollCommandHandler;
+import com.projectathena.movesmicroservice.adapter.out.common.DiceRollCommandHandler;
 import com.projectathena.movesmicroservice.application.port.out.DiceRollCommand;
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 import com.projectathena.movesmicroservice.core.entities.CharacterStatus;

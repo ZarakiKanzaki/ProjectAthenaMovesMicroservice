@@ -1,5 +1,6 @@
-package com.projectathena.movesmicroservice.application.service;
+package com.projectathena.movesmicroservice.adapter.out.common;
 
+import com.projectathena.movesmicroservice.application.port.out.DiceRollCommand;
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 import com.projectathena.movesmicroservice.core.entities.Tag;
 

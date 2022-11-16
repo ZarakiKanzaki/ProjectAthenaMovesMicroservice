@@ -4,6 +4,6 @@ import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRol
 import com.projectathena.movesmicroservice.core.entities.Move;
 import com.projectathena.movesmicroservice.core.entities.MoveRollResult;
 
-public interface CoreMovePort {
+public interface GetCoreMoveResultQuery {
     MoveRollResult getCoreMoveResult(short rollForMove, Move coreMove, CharacterPowerBeforeRoll rollPower);
 }

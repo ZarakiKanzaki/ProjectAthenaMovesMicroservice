@@ -1,29 +1,17 @@
 package com.projectathena.movesmicroservice.configuration;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+@Getter
+@Setter
 @Component
 @ConfigurationProperties(prefix = "fauna-db")
 public class FaunaClientProperties {
     private String endpoint;
     @Value("${fauna-db.secret}")
     private String secret;
-
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(final String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(final String secret) {
-        this.secret = secret;
-    }
 }

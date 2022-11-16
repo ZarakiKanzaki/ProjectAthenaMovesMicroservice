@@ -1,8 +1,9 @@
 package com.projectathena.movesmicroservice.application.service;
 
+import com.projectathena.movesmicroservice.application.port.out.DiceRollCommand;
 import com.projectathena.movesmicroservice.core.exceptions.ApplicationException;
-import com.projectathena.movesmicroservice.application.port.in.GetCoreMoveQuery;
-import com.projectathena.movesmicroservice.application.port.out.CoreMovePort;
+import com.projectathena.movesmicroservice.application.port.out.GetCoreMoveQuery;
+import com.projectathena.movesmicroservice.application.port.out.GetCoreMoveResultQuery;
 import com.projectathena.movesmicroservice.core.entities.CharacterPowerBeforeRoll;
 import com.projectathena.movesmicroservice.core.entities.MoveRollResult;
 import com.projectathena.movesmicroservice.core.usecase.UseCoreMoveUseCase;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CoreMoveService implements UseCoreMoveUseCase {
     private static final int MAXIMUM_ALLOWED_THEME_BOOKS = 4;
-    private final CoreMovePort coreMovePort;
+    private final GetCoreMoveResultQuery coreMovePort;
     private final DiceRollCommand diceRollCommand;
     private final GetCoreMoveQuery getCoreMoveQuery;
 

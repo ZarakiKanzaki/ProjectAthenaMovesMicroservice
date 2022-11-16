@@ -1,7 +1,8 @@
 package com.projectathena.movesmicroservice.application.service;
 
-import com.projectathena.movesmicroservice.application.port.in.GetCoreMoveQuery;
-import com.projectathena.movesmicroservice.application.port.out.CoreMovePort;
+import com.projectathena.movesmicroservice.application.port.out.DiceRollCommand;
+import com.projectathena.movesmicroservice.application.port.out.GetCoreMoveQuery;
+import com.projectathena.movesmicroservice.application.port.out.GetCoreMoveResultQuery;
 import com.projectathena.movesmicroservice.core.entities.*;
 import com.projectathena.movesmicroservice.core.enums.Condition;
 import com.projectathena.movesmicroservice.core.enums.MoveType;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class CoreMoveServiceTests {
-    private final CoreMovePort coreMovePort = mock(CoreMovePort.class);
+    private final GetCoreMoveResultQuery coreMovePort = mock(GetCoreMoveResultQuery.class);
     private final DiceRollCommand diceRollCommand = mock(DiceRollCommand.class);
     private final GetCoreMoveQuery getCoreMoveQuery = mock(GetCoreMoveQuery.class);
     private CoreMoveService coreMoveService;
@@ -68,7 +69,7 @@ class CoreMoveServiceTests {
         assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(CoreMoveServiceTests.buildCoreMove())).doesNotThrowAnyException();
         when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(CoreMoveServiceTests.buildMoveResultWithPartialSuccess());
 
-        final var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
+        var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
 
         assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isLessThan(SUCCESS_LOWER_BOUND);
         assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isGreaterThanOrEqualTo(PARTIAL_SUCCESS_LOWER_BOUND);
@@ -84,14 +85,27 @@ class CoreMoveServiceTests {
         assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(CoreMoveServiceTests.buildCoreMove())).doesNotThrowAnyException();
         when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(CoreMoveServiceTests.buildMoveResultWithSuccess());
 
-        final var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
+        var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
 
         assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isGreaterThanOrEqualTo(SUCCESS_LOWER_BOUND);
-        assertThat(rollResult.getRollResult()).isEqualTo(Condition.PARTIAL_SUCCESS);
-        assertThat(rollResult.getRollOutcomes()).allMatch(x -> x.getConditions().contains(Condition.PARTIAL_SUCCESS));
+        assertThat(rollResult.getRollResult()).isEqualTo(Condition.SUCCESS);
+        assertThat(rollResult.getRollOutcomes()).allMatch(x -> x.getConditions().contains(Condition.SUCCESS));
     }
 
+    @Test
+    void service_WithRollGreaterThanTenAndDynamite_ReturnDynamiteSuccessRollResult() {
+        characterPowerBeforeRollRequest = CoreMoveServiceTests.buildCharacterBeforeRollDynamite();
 
+        when(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).thenReturn(DYNAMITE_SUCCESS);
+        assertThatCode(() -> when(getCoreMoveQuery.getCoreMove(characterPowerBeforeRollRequest.getMoveId())).thenReturn(CoreMoveServiceTests.buildCoreMove())).doesNotThrowAnyException();
+        when(coreMoveService.userCoreMove(characterPowerBeforeRollRequest)).thenReturn(CoreMoveServiceTests.buildMoveResultWithDynamiteSuccess());
+
+        var rollResult = coreMoveService.userCoreMove(characterPowerBeforeRollRequest);
+
+        assertThat(diceRollCommand.rollForMove(characterPowerBeforeRollRequest)).isGreaterThanOrEqualTo(SUCCESS_UPPER_BOUND);
+        assertThat(rollResult.getRollResult()).isEqualTo(Condition.DYNAMITE_SUCCESS);
+        assertThat(rollResult.getRollOutcomes()).allMatch(x -> x.getConditions().contains(Condition.DYNAMITE_SUCCESS));
+    }
 
     @Test
     void service_WithCompliantRollButTimeoutRequest_ShouldThrowException() {
@@ -106,30 +120,26 @@ class CoreMoveServiceTests {
     }
 
     private static MoveRollResult buildMoveResultWithFailure() {
-        return MoveRollResult.builder()
-                .moveName(TITLE)
-                .rollResult(Condition.FAILURE)
-                .rollOutcomes(CoreMoveServiceTests.getFailingOutcomes())
-                .moveDescription(DESCRIPTION)
-                .characterPowerBeforeRoll(CoreMoveServiceTests.buildCharacterBeforeRoll())
-                .build();
+        return buildMoveResultBasedOnCondition(Condition.FAILURE);
+    }
+
+    private static MoveRollResult buildMoveResultWithDynamiteSuccess() {
+        return buildMoveResultBasedOnCondition(Condition.DYNAMITE_SUCCESS);
     }
 
     private static MoveRollResult buildMoveResultWithSuccess() {
-        return MoveRollResult.builder()
-                .moveName(TITLE)
-                .rollResult(Condition.PARTIAL_SUCCESS)
-                .rollOutcomes(CoreMoveServiceTests.buildSuccessOutcomes())
-                .moveDescription(DESCRIPTION)
-                .characterPowerBeforeRoll(CoreMoveServiceTests.buildCharacterBeforeRoll())
-                .build();
+        return buildMoveResultBasedOnCondition(Condition.SUCCESS);
     }
 
     private static MoveRollResult buildMoveResultWithPartialSuccess() {
+        return buildMoveResultBasedOnCondition(Condition.PARTIAL_SUCCESS);
+    }
+
+    private static MoveRollResult buildMoveResultBasedOnCondition(Condition condition) {
         return MoveRollResult.builder()
                 .moveName(TITLE)
-                .rollResult(Condition.PARTIAL_SUCCESS)
-                .rollOutcomes(CoreMoveServiceTests.buildPartialSuccessOutcomes())
+                .rollResult(condition)
+                .rollOutcomes(CoreMoveServiceTests.buildSuccessOutcomes())
                 .moveDescription(DESCRIPTION)
                 .characterPowerBeforeRoll(CoreMoveServiceTests.buildCharacterBeforeRoll())
                 .build();
@@ -178,6 +188,19 @@ class CoreMoveServiceTests {
         return Outcome.builder().description("Create a story tag").conditions(List.of(Condition.PARTIAL_SUCCESS)).build();
     }
 
+    private static CharacterPowerBeforeRoll buildCharacterBeforeRollDynamite() {
+        return CharacterPowerBeforeRoll.builder()
+                .moveId(SNOWFLAKE_ID)
+                .burnedTheTag(false)
+                .dynamiteUnlocked(true)
+                .highestPowerCharacterStatus(CoreMoveServiceTests.buildHighestPowerStatus())
+                .highestWeaknessCharacterStatus(CoreMoveServiceTests.buildHighestWeaknessStatus())
+                .numberOfMythosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
+                .numberOfLogosThemeBooks(LEGAL_NUMBER_OF_THEME_BOOK)
+                .powerTags(Arrays.asList(CoreMoveServiceTests.buildGenericPowerTag(), CoreMoveServiceTests.buildGenericPowerTag()))
+                .weaknessTags(List.of())
+                .build();
+    }
 
     private static CharacterPowerBeforeRoll buildCharacterBeforeRoll() {
         return CharacterPowerBeforeRoll.builder()
